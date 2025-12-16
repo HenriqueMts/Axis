@@ -4,17 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/http/server.ts"
+    "dev": "tsx --env-file .env watch src/http/server.ts",
+    "seed": "tsx --env-file .env src/db/seed.ts",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@biomejs/biome": "2.3.8",
     "@types/node": "^25.0.1",
+    "drizzle-kit": "^0.31.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "fastify": "^5.6.2"
-  }
+    "dayjs": "^1.11.19",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
+    "fastify": "^5.6.2",
+    "postgres": "^3.4.7",
+    "zod": "^4.2.0"
+  },
+  "packageManager": "pnpm@10.9.1"
 }
