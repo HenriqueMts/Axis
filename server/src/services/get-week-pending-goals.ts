@@ -47,7 +47,7 @@ export async function getWeekPendingGoals() {
             id: goalsCreatedUpToWeek.id,
             title: goalsCreatedUpToWeek.title,
             desiredWeeklyFrequency: goalsCreatedUpToWeek.desiredWeeklyFrequency,
-            // COALESCE garante que se for null, retorna 0. mapWith(Number) garante tipagem numérica.
+
             completionCount: sql<number>`COALESCE(${goalCompletionsCount.completionCount}, 0)`.mapWith(Number),
         })
         .from(goalsCreatedUpToWeek)
