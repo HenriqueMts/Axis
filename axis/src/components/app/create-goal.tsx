@@ -43,7 +43,7 @@ export function CreateGoal({ onClose }: Readonly<CreateGoalProps>) {
   } = useForm<CreateGoalSchema>({
     resolver: zodResolver(createGoalSchema),
     defaultValues: {
-      desiredWeeklyFrequency: 3 
+      desiredWeeklyFrequency: 1 
     }
   });
 
@@ -103,7 +103,7 @@ export function CreateGoal({ onClose }: Readonly<CreateGoalProps>) {
                 control={control}
                 name="desiredWeeklyFrequency"
     
-                defaultValue={3} 
+                defaultValue={1} 
                 render={({ field }) => (
                   <RadioGroup 
             

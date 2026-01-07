@@ -1,4 +1,4 @@
-import { CheckCircle2, Plus } from "lucide-react";
+import { CheckCircle2, Plus, Check } from "lucide-react";
 import { DialogTrigger } from "@/src/components/ui/dialog";
 import { Button } from "@/src/components/ui/button";
 import { Separator } from "@/src/components/ui/separator";
@@ -34,7 +34,7 @@ export function Summary({ summary, pendingGoals }: Readonly<SummaryProps>) {
   }
 
   return (
-    <div className="py-10 max-w-120 mx-auto flex flex-col gap-6">
+    <div className="py-10 max-w-xl mx-auto flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-lg font-semibold capitalize">
@@ -56,8 +56,8 @@ export function Summary({ summary, pendingGoals }: Readonly<SummaryProps>) {
         
         <div className="flex items-center justify-between text-xs text-zinc-400">
           <span>
-            Você completou <span className="text-zinc-100">{summary.completed}</span> de{" "}
-            <span className="text-zinc-100">{summary.total}</span> metas nessa semana.
+            Você completou <span className="text-zinc-100">{summary.completed}</span> das{" "}
+            <span className="text-zinc-100">{summary.total}</span> ações planejadas.
           </span>
           <span>{completedPercentage}%</span>
         </div>
@@ -83,7 +83,7 @@ export function Summary({ summary, pendingGoals }: Readonly<SummaryProps>) {
               disabled={isDisabled}
               variant="outline"
               className={cn(
-                "group transition-all",
+                "group transition-ease",
                
                 isCompletedToday 
                   ? "disabled:bg-emerald-950/30 disabled:border-emerald-900 disabled:text-emerald-400 disabled:opacity-100" 
@@ -91,21 +91,24 @@ export function Summary({ summary, pendingGoals }: Readonly<SummaryProps>) {
               )}
             >
               
-              <Plus className={cn(
-                  "size-4", 
-                  isCompletedToday ? "text-emerald-400" : "text-zinc-600 group-hover:text-zinc-200"
-              )} />
+              <div className={`transition-transform duration-300 ${isCompletedToday ? 'rotate-0' : 'rotate-90'}`}>
+              {isCompletedToday ? (
+                  <Check className="size-4 text-emerald-500" />
+                ) : (
+                  <Plus className="size-4 text-zinc-400 group-disabled:text-zinc-600" />
+                )}
+              </div>
               
               {goal.title}
 
        
-              {isCompletedToday && <span className="text-xs ml-1 text-emerald-500 opacity-70">(Feito)</span>}
+              {isCompletedToday && <span className="text-xs ml-1 text-emerald-500 opacity-70">(Completo por hoje.)</span>}
             </Button>
           );
         })}
       </div>
 
-      {/* ... (Histórico permanece igual) ... */}
+
       <div className="flex flex-col gap-6">
         <h2 className="text-xl font-medium">Sua semana</h2>
         {summary.goalsPerDay ? (
