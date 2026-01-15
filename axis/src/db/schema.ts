@@ -9,16 +9,12 @@ export const users = pgTable("user", {
         .$defaultFn(() => randomUUID()),
     name: text("name"),
     email: text("email").notNull().unique(),
-    emailVerified: timestamp("email_verified", { mode: "date" }),
+    emailVerified: timestamp("emailVerified", { mode: "date" }),
     image: text("image"),
-
-
     password: text("password"),
     phone: text("phone"),
-
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
-
 
 export const accounts = pgTable(
     "account",
@@ -28,7 +24,7 @@ export const accounts = pgTable(
             .references(() => users.id, { onDelete: "cascade" }),
         type: text("type").$type<AdapterAccount["type"]>().notNull(),
         provider: text("provider").notNull(),
-        providerAccountId: text("provider_account_id").notNull(),
+        providerAccountId: text("providerAccountId").notNull(),
         refresh_token: text("refresh_token"),
         access_token: text("access_token"),
         expires_at: integer("expires_at"),
@@ -38,18 +34,29 @@ export const accounts = pgTable(
         session_state: text("session_state"),
     },
     (account) => [
-
         primaryKey({ columns: [account.provider, account.providerAccountId] }),
     ]
 );
 
 export const sessions = pgTable("session", {
-    sessionToken: text("session_token").primaryKey(),
+    sessionToken: text("sessionToken").primaryKey(),
     userId: text("userId")
         .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
     expires: timestamp("expires", { mode: "date" }).notNull(),
 });
+
+export const verificationTokens = pgTable(
+    "verificationToken",
+    {
+        identifier: text("identifier").notNull(),
+        token: text("token").notNull(),
+        expires: timestamp("expires", { mode: "date" }).notNull(),
+    },
+    (verificationToken) => [
+        primaryKey({ columns: [verificationToken.identifier, verificationToken.token] }),
+    ]
+);
 
 
 export const goals = pgTable("goals", {
@@ -77,17 +84,3 @@ export const goalsCompletions = pgTable("goals_completions", {
         .notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
-
-
-export const verificationTokens = pgTable(
-    "verification_token",
-    {
-        identifier: text("identifier").notNull(),
-        token: text("token").notNull(),
-        expires: timestamp("expires", { mode: "date" }).notNull(),
-    },
-    (vt) => [
-
-        primaryKey({ columns: [vt.identifier, vt.token] }),
-    ]
-);

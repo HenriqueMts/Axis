@@ -1,20 +1,31 @@
 import { db } from "../db";
 import { goals } from "../db/schema";
 
-interface createGoalRequest {
+
+interface CreateGoalRequest {
+    userId: string;
     title: string;
     desiredWeeklyFrequency: number;
 }
 
-export async function createGoal({ title, desiredWeeklyFrequency }: createGoalRequest) {
-    const result = await db.insert(goals).values({
-        title,
-        desiredWeeklyFrequency,
-    }).returning();
+export async function createGoal({
+    userId,
+    title,
+    desiredWeeklyFrequency
+}: CreateGoalRequest) {
 
-    const goal = result[0]
+
+    const [goal] = await db
+        .insert(goals)
+        .values({
+            userId, // Referência ao dono da meta
+            title,
+            desiredWeeklyFrequency,
+        })
+        .returning();
+
 
     return {
-        goal
-    }
+        goal,
+    };
 }

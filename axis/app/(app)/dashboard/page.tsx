@@ -1,44 +1,23 @@
-'use client'
+import { auth } from "@/auth"; 
+import { redirect } from "next/navigation";
+import { DashboardClient } from "./dashboard-client"; // Importa o arquivo do Passo 1
 
-import { Dialog } from "@/src/components/ui/dialog";
-import { CreateGoal } from "@/src/components/app/create-goal";
-import { EmptyGoals } from "@/src/components/app/empty-goals";
-import { Summary } from "@/src/components/app/summary";
-import { useSummary, usePendingGoals } from "@/src/hooks/use-summary";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
+export default async function DashboardPage() {
 
-export default function DashboardPage() {
-  const { data: summaryData, isLoading: isLoadingSummary } = useSummary();
-  const { data: pendingData } = usePendingGoals();
-  
+  const session = await auth();
 
-  const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
-
-  if (isLoadingSummary) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <Loader2 className="text-zinc-500 animate-spin size-10" />
-      </div>
-    );
+ 
+  if (!session?.user) {
+    redirect("/login");
   }
 
+ 
   return (
-
-    <Dialog open={isCreateGoalOpen} onOpenChange={setIsCreateGoalOpen}>
-      
-      {summaryData?.summary.total && summaryData.summary.total > 0 ? (
-        <Summary 
-            summary={summaryData.summary} 
-            pendingGoals={pendingData?.pendingGoals || []} 
-        />
-      ) : (
-        <EmptyGoals />
-      )}
-
-    
-      <CreateGoal onClose={() => setIsCreateGoalOpen(false)} />
-      
-    </Dialog>
+    <DashboardClient 
+        user={{
+            name: session.user.name,
+            image: session.user.image,
+        }} 
+    />
   );
 }

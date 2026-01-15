@@ -1,30 +1,14 @@
-import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import { db } from "../db";
-import { and, count, gte, lte, eq, sql } from "drizzle-orm";
-import { goalsCompletions, goals } from "../db/schema";
-
-dayjs.extend(weekOfYear);
+import { db } from '../db'
+import { goalsCompletions, goals } from '../db/schema'
+import { and, count, eq, gte, lte, sql } from 'drizzle-orm'
+import dayjs from 'dayjs'
 
 export async function getWeekPendingGoals() {
-    const firstDayOfTheWeek = dayjs().startOf('week').toDate();
-    const lastDayOfTheWeek = dayjs().endOf('week').toDate();
+    const firstDayOfWeek = dayjs().startOf('week').toDate()
+    const lastDayOfWeek = dayjs().endOf('week').toDate()
 
-
-    const goalsCreatedUpToWeek = db.$with('goals_created_up_to_week').as(
-        db
-            .select({
-                id: goals.id,
-                title: goals.title,
-                desiredWeeklyFrequency: goals.desiredWeeklyFrequency,
-                createdAt: goals.createdAt,
-            })
-            .from(goals)
-            .where(lte(goals.createdAt, lastDayOfTheWeek))
-    );
-
-
-    const goalCompletionsCount = db.$with('goals_completions_counts').as(
+    // CTE: Contagem de conclusões APENAS desta semana
+    const goalCompletionCounts = db.$with('goal_completion_counts').as(
         db
             .select({
                 goalId: goalsCompletions.goalId,
@@ -33,30 +17,32 @@ export async function getWeekPendingGoals() {
             .from(goalsCompletions)
             .where(
                 and(
-                    gte(goalsCompletions.createdAt, firstDayOfTheWeek),
-                    lte(goalsCompletions.createdAt, lastDayOfTheWeek)
+                    gte(goalsCompletions.createdAt, firstDayOfWeek),
+                    lte(goalsCompletions.createdAt, lastDayOfWeek)
                 )
             )
             .groupBy(goalsCompletions.goalId)
-    );
+    )
 
-
+    // Query Principal
     const pendingGoals = await db
-        .with(goalsCreatedUpToWeek, goalCompletionsCount)
+        .with(goalCompletionCounts)
         .select({
-            id: goalsCreatedUpToWeek.id,
-            title: goalsCreatedUpToWeek.title,
-            desiredWeeklyFrequency: goalsCreatedUpToWeek.desiredWeeklyFrequency,
-
-            completionCount: sql<number>`COALESCE(${goalCompletionsCount.completionCount}, 0)`.mapWith(Number),
+            id: goals.id,
+            title: goals.title,
+            desiredWeeklyFrequency: goals.desiredWeeklyFrequency,
+            // Se não houver completions na semana, retorna 0 (graças ao Left Join + Coalesce)
+            completionCount: sql/*sql*/ `
+        COALESCE(${goalCompletionCounts.completionCount}, 0)
+      `.mapWith(Number),
         })
-        .from(goalsCreatedUpToWeek)
-        .leftJoin(
-            goalCompletionsCount,
-            eq(goalCompletionsCount.goalId, goalsCreatedUpToWeek.id)
-        );
+        .from(goals)
 
-    return {
-        pendingGoals,
-    };
+        .leftJoin(goalCompletionCounts, eq(goals.id, goalCompletionCounts.goalId))
+        .where(
+            // IMPORTANTE: Traz metas criadas até o FIM da semana (inclui as criadas agora)
+            lte(goals.createdAt, lastDayOfWeek)
+        )
+
+    return { pendingGoals }
 }

@@ -1,4 +1,4 @@
-import { PendingGoalsResponse, SummaryResponse } from "../types/api-responses";
+import { PendingGoalsResponse, SummaryResponse } from "@/types/api-responses";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
 
