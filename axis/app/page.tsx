@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, BarChart3, ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FloatingHeader } from "@/components/floating-header"; // <--- Importe aqui
+import { FloatingHeader } from "@/components/floating-header";
 
 export default async function LandingPage() {
   const session = await auth();
@@ -14,14 +14,10 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-50 selection:bg-pink-500/30">
-      
-      {/* --- NOVA HEADER FLUTUANTE --- */}
       <FloatingHeader />
 
       <main>
-        {/* --- HERO SECTION (Adicionei id="hero") --- */}
         <section id="hero" className="relative py-32 md:py-40 overflow-hidden">
-          {/* ... (Conteúdo do Hero mantém igual) ... */}
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-[#F472B6] to-[#8B5CF6] rounded-full blur-[120px] opacity-20 pointer-events-none" />
 
           <div className="container mx-auto px-4 relative z-10 text-center flex flex-col items-center">
@@ -74,7 +70,6 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* --- FEATURES GRID (Mantive o id="features") --- */}
         <section id="features" className="py-20 bg-zinc-900/50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
@@ -114,7 +109,6 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* --- HOW IT WORKS --- */}
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
@@ -147,7 +141,6 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* --- FAQ SECTION (Adicionei id="faq") --- */}
         <section id="faq" className="py-20 md:py-32 relative overflow-hidden">
            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 to-[#F472B6]/5 pointer-events-none" />
            
@@ -167,7 +160,6 @@ export default async function LandingPage() {
 
       </main>
 
-      {/* --- FOOTER --- */}
       <footer className="border-t border-zinc-900 bg-zinc-950 py-12">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
@@ -184,7 +176,7 @@ export default async function LandingPage() {
           </div>
 
           <div className="text-sm text-zinc-600">
-            © {new Date().getFullYear()} Axis Inc. Todos os direitos reservados.
+            © {new Date().getFullYear()} Axis Todos os direitos reservados.
           </div>
         </div>
       </footer>

@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSummaryAction, getPendingGoalsAction } from "@/app/actions/goals"; // Importe as actions
-
+import { getSummaryAction, getPendingGoalsAction } from "@/app/actions/goals";
 
 export function useSummary() {
   return useQuery({

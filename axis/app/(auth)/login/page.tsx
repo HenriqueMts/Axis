@@ -54,7 +54,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* --- FORMULÁRIO --- */}
+
         <div className="flex flex-col gap-5 sm:gap-6">
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
                 <div className="flex flex-col gap-1.5 sm:gap-2">
@@ -118,7 +118,7 @@ export default function LoginPage() {
             </div>
 
             <p className="text-center text-xs sm:text-sm text-zinc-500">
-                Não tem uma conta?{' '}
+                Não tem uma conta?
                 <Link href="/register" className="text-white hover:underline underline-offset-4 font-medium transition-colors">
                     Criar conta
                 </Link>

@@ -1,1 +1,0 @@
-DROP TABLE "goal_completions" CASCADE;

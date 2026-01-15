@@ -78,7 +78,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* --- CONTEÚDO --- */}
         {success ? (
              <div className="bg-zinc-900 border border-emerald-500/30 rounded-xl p-6 sm:p-8 flex flex-col items-center gap-3 sm:gap-4 text-center animate-in zoom-in-95">
                 <div className="size-12 sm:size-14 bg-emerald-500/10 rounded-full flex items-center justify-center">

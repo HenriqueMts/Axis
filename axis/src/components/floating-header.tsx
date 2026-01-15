@@ -33,7 +33,7 @@ export const FloatingHeader = () => {
         flex items-center justify-between
         w-[90%] sm:w-auto
         gap-4 sm:gap-8
-        px-3 sm:px-4 py-2.5  /* Ajustei o padding do container para acomodar o botão maior */
+        px-3 sm:px-4 py-2.5
         rounded-full
         border border-zinc-800
         bg-zinc-950/80 backdrop-blur-md
@@ -61,21 +61,19 @@ export const FloatingHeader = () => {
         ))}
       </div>
 
-    
       <div className="h-5 w-px bg-zinc-800 hidden sm:block mx-1" />
 
-     
       <div className="flex items-center">
         <Link href="/login">
           <Button 
             className="
               rounded-full 
-              h-10 px-6 text-sm font-semibold     /* Aumentei altura e padding */
+              h-10 px-6 text-sm font-semibold
               text-white border-0
-              bg-gradient-to-r from-[#F472B6] to-[#8B5CF6] /* O gradiente da marca */
+              bg-gradient-to-r from-[#F472B6] to-[#8B5CF6]
               hover:opacity-90 
-              shadow-[0_0_15px_rgba(244,114,182,0.4)]      /* Glow rosa suave */
-              hover:shadow-[0_0_25px_rgba(244,114,182,0.6)] /* Glow intenso no hover */
+              shadow-[0_0_15px_rgba(244,114,182,0.4)]
+              hover:shadow-[0_0_25px_rgba(244,114,182,0.6)]
               transition-all duration-300
             "
           >
