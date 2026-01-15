@@ -32,13 +32,13 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
     ? Math.round((summary.completed / summary.total) * 100) 
     : 0;
 
-  const currentDayKey = dayjs().format("YYYY-MM-DD");
+ 
   
   const goalsCompletedToday = new Set(
     Object.values(summary.goalsPerDay || {})
       .flat()
-      .filter(completion => dayjs(completion.completedAt).isSame(dayjs(), 'day'))
-      .map(completion => completion.goalId)
+      .filter((completion: { completedAt: string; }) => dayjs(completion.completedAt).isSame(dayjs(), 'day'))
+      .map((completion: { id: string; }) => completion.id)
   );
 
   function handleCompleteGoal(goalId: string) {
@@ -99,7 +99,7 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
               <div className={`transition-transform duration-300 mr-2 flex items-center justify-center ${isCompletedToday ? 'rotate-0' : 'rotate-90'}`}>
                 {isCompletedToday ? <Check className="size-4 text-emerald-500" /> : <Plus className="size-4 text-zinc-400 group-disabled:text-zinc-600" />}
               </div>
-              <span className="truncate max-w-xs sm:max-w-[200px]">{goal.title}</span>
+              <span className="truncate max-w-xs sm:max-w-50">{goal.title}</span>
               {isCompletedToday && <span className="text-xs ml-1 sm:ml-2 text-emerald-500 opacity-70 hidden sm:inline-block">(Completo)</span>}
             </Button>
           );

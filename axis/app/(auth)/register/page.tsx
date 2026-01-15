@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Loader2, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
 import { registerAction } from "@/app/actions/register";
+import Image from 'next/image';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     
-    // Chama a Server Action
+    
     const result = await registerAction({
         name: formData.name,
         email: formData.email,
@@ -55,7 +56,7 @@ export default function RegisterPage() {
         setError(result.error);
     } else {
         setSuccess(true);
-        // Redireciona para login após sucesso
+       
         setTimeout(() => router.push('/login'), 2000);
     }
   };
@@ -64,10 +65,10 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-3 sm:p-4 md:p-6">
       <div className="w-full max-w-xs sm:max-w-[400px] md:max-w-[450px] space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         
-        {/* --- HEADER --- */}
+
         <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
-          <div className="size-10 sm:size-12 md:size-14 bg-white rounded-xl flex items-center justify-center mb-1 sm:mb-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-            <span className="font-bold text-black text-xl sm:text-2xl md:text-3xl">A</span>
+          <div className="size-10 sm:size-12 md:size-14  rounded-xl flex items-center justify-center mb-1 sm:mb-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+            <Image src="/axis-icon.svg" alt="Logo" width={40} height={40} />
           </div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-white">
             Crie sua conta

@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
-import { loginWithCredentialsAction } from '@/app/actions/login'; // Action do passo 2
+import { loginWithCredentialsAction } from '@/app/actions/login'; 
+import Image from 'next/image';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,22 +30,22 @@ export default function LoginPage() {
       setError(result.error);
       setIsLoading(false);
     } else {
-      // Se deu certo, redireciona para o dashboard
-      router.refresh(); // Atualiza o cache do cliente
+    
+      router.refresh(); 
       router.push('/'); 
     }
   };
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-3 sm:p-4 md:p-6">
-      <div className="w-full max-w-xs sm:max-w-[400px] md:max-w-[450px] space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="w-full max-w-xs sm:max-w-100 md:max-w-112.5 space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         
-        {/* --- HEADER --- */}
+     
         <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
-           {/* Logo ou Ícone */}
-          <div className="size-10 sm:size-12 md:size-14 bg-white rounded-xl flex items-center justify-center mb-1 sm:mb-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-             <span className="font-bold text-black text-xl sm:text-2xl md:text-3xl">A</span>
-          </div>
+     
+          <div className="size-10 sm:size-12 md:size-14  rounded-xl flex items-center justify-center mb-1 sm:mb-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                      <Image src="/axis-icon.svg" alt="Logo" width={40} height={40} />
+                    </div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-white">
             Bem-vindo de volta
           </h1>
