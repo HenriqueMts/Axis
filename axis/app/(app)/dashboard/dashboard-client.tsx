@@ -35,10 +35,9 @@ export function DashboardClient({ user }: Readonly<DashboardClientProps>) {
   return (
     <Dialog open={isCreateGoalOpen} onOpenChange={setIsCreateGoalOpen}>
       
-     
       <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl mx-auto py-6 sm:py-8 md:py-10 px-3 sm:px-4 md:px-6 flex flex-col gap-6 sm:gap-8">
         
-   
+        {/* --- Header --- */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2 sm:gap-3">
               {user.image ? (
@@ -66,10 +65,17 @@ export function DashboardClient({ user }: Readonly<DashboardClientProps>) {
           </Button>
         </div>
 
-     
-       {summaryData?.summary?.total && summaryData.summary.total > 0 ? ( <Summary summary={summaryData.summary} pendingGoals={pendingData?.pendingGoals || []} onAddGoal={function (): void {
-                  throw new Error("Function not implemented.");
-              } } /> ) : ( <EmptyGoals /> )}
+        {/* --- Conteúdo (Summary ou Empty) --- */}
+        {summaryData?.summary?.total && summaryData.summary.total > 0 ? (
+          <Summary 
+            summary={summaryData.summary} 
+            pendingGoals={pendingData?.pendingGoals || []} 
+          
+            onAddGoal={() => setIsCreateGoalOpen(true)} 
+          />
+        ) : (
+          <EmptyGoals />
+        )}
 
         <CreateGoal onClose={() => setIsCreateGoalOpen(false)} />
         

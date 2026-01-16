@@ -32,13 +32,12 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
     ? Math.round((summary.completed / summary.total) * 100) 
     : 0;
 
- 
-  
+  // Lógica corrigida: Identifica metas completadas hoje usando o 'goalId'
   const goalsCompletedToday = new Set(
     Object.values(summary.goalsPerDay || {})
       .flat()
-      .filter((completion: { completedAt: string; }) => dayjs(completion.completedAt).isSame(dayjs(), 'day'))
-      .map((completion: { id: string; }) => completion.id)
+      .filter((completion) => dayjs(completion.completedAt).isSame(dayjs(), 'day'))
+      .map((completion) => completion.goalId) // Correção crítica aqui
   );
 
   function handleCompleteGoal(goalId: string) {
@@ -46,9 +45,9 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
   }
 
   return (
-   
     <div className="flex flex-col gap-4 sm:gap-6 w-full"> 
       
+      {/* --- CABEÇALHO DA LISTA --- */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-2 sm:gap-3">
           <span className="text-base sm:text-lg font-semibold capitalize">
@@ -56,12 +55,14 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
           </span>
         </div>
 
-       
         <Button size="sm" onClick={onAddGoal} className="w-full sm:w-auto">
-          <Plus className="size-4" /> <span className="hidden xs:inline">Cadastrar Meta</span><span className="inline xs:hidden">Meta</span>
+          <Plus className="size-4" /> 
+          <span className="hidden xs:inline">Cadastrar Meta</span>
+          <span className="inline xs:hidden">Meta</span>
         </Button>
       </div>
 
+      {/* --- BARRA DE PROGRESSO --- */}
       <div className="flex flex-col gap-2 sm:gap-3">
         <Progress value={summary.completed} max={summary.total}>
           <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
@@ -78,8 +79,10 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
 
       <Separator />
 
+      {/* --- LISTA DE METAS PENDENTES --- */}
       <div className="flex flex-wrap gap-2 sm:gap-3">
         {pendingGoals.map((goal) => {
+          // AQUI ESTAVA O ERRO: Definindo a variável dentro do map
           const isCompletedToday = goalsCompletedToday.has(goal.id);
           const isDisabled = goal.completionCount >= goal.desiredWeeklyFrequency || isCompletedToday;
 
@@ -91,6 +94,7 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
               variant="outline"
               className={cn(
                 "group transition-all duration-300 ease-in-out text-xs sm:text-sm",
+                // Agora 'isCompletedToday' existe neste escopo
                 isCompletedToday 
                   ? "disabled:bg-emerald-950/30 disabled:border-emerald-900 disabled:text-emerald-400 disabled:opacity-100" 
                   : "disabled:bg-zinc-900 disabled:text-zinc-500 disabled:border-zinc-800 disabled:opacity-50" 
@@ -106,6 +110,7 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
         })}
       </div>
 
+      {/* --- HISTÓRICO DA SEMANA --- */}
       <div className="flex flex-col gap-4 sm:gap-6">
         <h2 className="text-lg sm:text-xl font-medium">Sua semana</h2>
         {summary.goalsPerDay && Object.keys(summary.goalsPerDay).length > 0 ? (
