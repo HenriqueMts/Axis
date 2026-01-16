@@ -32,12 +32,12 @@ export function Summary({ summary, pendingGoals, onAddGoal }: Readonly<SummaryPr
     ? Math.round((summary.completed / summary.total) * 100) 
     : 0;
 
-  // Lógica corrigida: Identifica metas completadas hoje usando o 'goalId'
+  
   const goalsCompletedToday = new Set(
     Object.values(summary.goalsPerDay || {})
       .flat()
       .filter((completion) => dayjs(completion.completedAt).isSame(dayjs(), 'day'))
-      .map((completion) => completion.goalId) // Correção crítica aqui
+      .map((completion) => completion.goalId) 
   );
 
   function handleCompleteGoal(goalId: string) {

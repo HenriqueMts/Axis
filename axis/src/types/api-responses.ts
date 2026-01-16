@@ -5,14 +5,19 @@ export interface PendingGoal {
   completionCount: number;
 }
 
+
+export type GoalCompletion = {
+  id: string;
+  title: string;
+  completedAt: string;
+  goalId: string;
+};
+
+
 export interface SummaryData {
   completed: number;
   total: number;
-  goalsPerDay: Record<string, {
-    id: string;
-    title: string;
-    completedAt: string;
-  }[]> | null;
+  goalsPerDay: Record<string, GoalCompletion[]> | null;
 }
 
 export interface PendingGoalsResponse {
